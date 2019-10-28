@@ -91,9 +91,9 @@
 
 %% Author and Affiliation (multiple authors with multiple affiliations)
 \author{Anca-Simona Horvath\thanks{e-mail: ancah@hum.aau.dk}\\ %
-        \scriptsize Humanities, AAU %
+        \parbox{1.4in}{\scriptsize \centering Research Laboratory for Art and Technology \\ KOM, AAU Aalborg} %
 \and Mauro Nascimben \thanks{e-mail: mana@create.aau.dk}\\ %
-     \scriptsize Augmented Cognition Lab \\ CREATE, AAU CPH %
+     \parbox{1.4in}{\scriptsize \centering Augmented Cognition Lab \\ CREATE, AAU CPH }%
 \and Silvin Willemsen\thanks{e-mail: sil@create.aau.dk}\\ %
      \parbox{1.4in}{\scriptsize \centering Multisensory Experience Lab \\ CREATE, AAU CPH}}
 
@@ -155,17 +155,93 @@ delenit augue duis dolore te feugait nulla facilisi.%
 
 \maketitle
 
-In \autoref{sec:sys}, an overview of the complete system will be given. In \autoref{sec:PM} details about the physical model will be 
+Virtual Reality (VR)... makes use of a Head Mounted Display (HMD)
+...and has been used as a platform for the creation of perceptual illusions (\textbf{SOURCES})
+The darbuka (or goblet drum) is an old egyptian membranophone.
+
+State of the art on virtual instruments...
+
+In this paper, a multisensory VR application is presented where a user interacts with both a physical and a virtual drum. The physical drum, is augmented using a haptuator through which the output sound of a physical model of a (drum) membrane (further referred to as ``the physical model") is sent. The user wears a Head Mounted Display (HMD) through which the virtual drum is displayed. 
+
+In \autoref{sec:haptics}, an introduction to haptic perception will be given. In \autoref{sec:sys} the system overview will be given after which details about the implementation of the virtual environment and the physical model will be given in \autoref{sec:unity} and \autoref{sec:PM} respectively. Then, in \autoref{sec:exp} the experiment will be described and its results will be shown and discussed in \autoref{sec:resDisc}. Lastly, \autoref{sec:conc} will conclude. 
+
+\section{Haptics}\label{sec:haptics}
+% \subsection{Introduction}
+Touch is the first sense to develop in the womb in humans \cite{Barnett1972} compared to visions which it is the last sense we develop. Another difference between touch and vision, is that we cannot shut down touch whereas we can close our eyes voluntarily. Despite this, tactile awareness generally receives less attention than other sensory modalities when it comes to technological development \textbf{SOURCE?}. One reason for this under-evaluation of tactile stimuli could be the broad number of sensations touch comprises: pressure, temperature, pleasure, pain, joint position, muscle sense, and movement. Probably pain should be included too. \textbf{In this section.... }
+
+\subsection{Haptic perception}
+The Peripheral Nervous System gathers environmental stimuli in form of visual, audible, tactile, olfactive and gustatory inputs and transfers them to the Central Nervous System for further elaboration and integration. Tactile information is collected by proprioceptors in the skin, muscles, and joints and sent to the primary somatosensory cortex (post-central gyrus) via the dorsal column-medial lemniscus pathway to the thalamic nuclei \cite{Blatow2007}. This cortical area is the first stage for the tactile awareness occurring across body surface. The primary somatosensory cortex represents tactile stimuli following an inverted order from the toe (at the top of the parietal hemisphere) to mouth (at the lateral side of the parietal hemisphere) \cite{Narici1999}. However, several other structures of the central nervous system concur in the generation of tactile feedback: generally, a single brain area is never responsible for the awareness of information \cite{Manzoni1986}. Directly connected with the primary somatosensory cortex is the secondary somatosensory cortex, an associative area important in humans for light touch and tactile attention \cite{Eickhoff2005}. It is reported in literature that persons undergoing tactile training improve their perception but also strengthens the connections and cortical representations of the stimulated body area \cite{Saito2007} with a direct relationship between size of cortical region and haptic performance. For the awareness of touch, the presence of the short term memory system is also important \cite{Edelman1989} as the parietal ventral area connects both pre-motor brain areas and the somatosensory memory hub. A specific area of the central parietal lobe, placed caudally from the primary somatosensory cortex, integrates the information from the visual and haptic regions to locate objects in space. 
+
+\subsection{Technical notes on experiments involving haptics}
+Conducting experiments on haptics is quite difficult because there are no proper technological devices for delivering controlled and reliable tactile stimuli \textbf{SOURCE}. In virtual environments (as used in Virtual Reality) using the Leap Motion technology \textbf{[Leap motion source]}, subjects are able to move their hands freely, which  could confound somatosensory processing with activations related to motor planning and movement \cite{Bodegard2001}. These uncontrolled motor activities also result in uncontrolled somatic stimulation. There is an anatomical explanation of this close somato-motor functional relationship: areas involved in the perception of touch on the hands in the primary somatosensory cortex are located mostly in front of the areas responsible for hand movements \cite{Penfield1950}.
+Another problem with haptics is the subjective quantification of the stimuli. Contents of tactile consciousness vary between individuals and a common lexicon to evaluate haptic sensation through surveys still seems far to be conceived \cite{Gallace2010}.
+
+\subsection{Interaction between visual information and tactile feedback}
+In famous experiment by \cite{Pavani2000}, the authors asked a group of persons to detect the position of vibrotactile stimuli while their upper arm was placed out of view and a fake rubber hand was placed in front of them. The rubber hand was placed in a position that was anatomically compatible with their real hand and all participants reported that tactile stimulation was arising from the mannequin and not from their real hand. A similar experiment was conducted by \cite{Schaefer2006} asking subjects to watch a video of a hand being touched on the first finger while their own hand was stimulated synchronously. Brain activity during synchronous stimulation showed an improved tactile acuity. In virtual environments, hand manipulations and interactions are a component that enhances realism \textbf{SOURCE}. 
+
+\section{Myo Armband}
+Myo (Thalmic Labs, now North) \cite{myowebsite} \textbf{WEBSITE DOESN'T EXIST} is a wireless sensor that records surface electromyographic (sEMG) activity from 8 sensors placed around the forearm. Sensors record EMG signals converting muscle activation in electric potentials. The sampling frequency of the device is 200Hz and the signal amplitude is expressed in “units of activation” and not in millivolts (mV) like standard electromyographic recorders. The armband encloses a nine axis inertial measurement unit (IMU) which contains a three axis gyroscope, three axis accelerometer and a three axis magnetometer \cite{myowebsite}. From these measurements of spatial information, wearer’s arm can be tracked both in the orientation and movement. The orientation data indicates the positioning of the armband in terms of the euler angles (roll, pitch and yaw). The angular velocity of the armband is provided in a vector format and the accelerometer represents the acceleration the Myo armband is undergoing at a given time. It should be considered that the Myo armband is better suited for determining the relative positioning of the arm rather than the absolute position. The Myo armband has been made to work best at the widest part of the forearm, that is, the upper forearm (\autoref{fig:arm1}).
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{myo_armband_muscles}
+\caption{Muscle detected and armband position}
+\centering
+\label{fig:arm1}
+\end{figure}
+The Myo can detect the forearm movement in space, flexion and extension of the wrist and when a subject is spreading the fingers or closing the fist. 
+\subsection{Raw signals and pre-processing}
+To obtain gestural data from a subject after wearing the armband it could be possible to extract the raw signals as shown in \autoref{fig:sig0}. The armband uses a bluetooth connection to stream data to the pc for data collection and interpretation. It is suggested from the producer to “warm-up” the band following the app procedure before starting to collect sEMG signals.
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{signals0}
+\caption{Raw sEMG signals as extracted from Myo armband}
+\centering
+\label{fig:sig0}
+\end{figure}
+However, raw signals have limited practical application while the common pre-processing involves rectification and envelope calculation (Figure \ref{fig:sig1}). These signals are more easily interpreted and could be integrated in Unity3D environment for hand gesture control. 
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{signal1}
+\caption{Post-processed sEMG signals}
+\centering
+\label{fig:sig1}
+\end{figure}
+In Unity, the arm-band needs to sit on the subject for at least 2 minutes to be considered “stable”. A simple controller was created using a thin rectangle with a box on the top to simulate a drum-stick. One end-point is fixed in the same way human forearm connects at the elbow. The box changes colour according to wrist movement in extension (green) or flexion (blue). In other positions, the box stays gray. In \autoref{fig:mm1}, the extension of the palm of the hand is detected by the system and the colour of the box turned to green. Using forearm motion and wrist extension or flexion it could be possible to create a virtual drum using collisions with virtual drum parts. When collision between the virtual stick controlled with Myo and the drum component is detected a sound file could be played with a pre-sampled musical tone. A simple demo was created using this procedure using a cymbal and a snare-drum.
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{mauro_myo}
+\caption{Human interaction in Unity using Myo armband}
+\centering
+\label{fig:mm1}
+\end{figure}
 
 \section{System Overview} \label{sec:sys}
-\textit{NOTES:}
-\begin{itemize}
-    \item Oculus for VR experience
-    \item Leap motion for control
-    \item Physical drum for interaction
-    \item Haptuator for haptic feedback
-    \item Physical model for sound and haptuator input
-\end{itemize}
+The overview of the system is given in \autoref{fig:systemLayout}. The user interacts with the system using their hands which are tracked by the Leap Motion, an infrared-sensor-based camera that allows for accurate tracking of hand and finger motion . This data is retrieved by the PC which runs the Unity3D software, or Unity for short, which a software platform commonly used for creating VR applications. The Unity ``scene" contains the virtual environment (see \autoref{sec:unity}) that the user will see through the HMD and the physical model used for the sound and haptics (see \autoref{sec:PM}). Once the tracked hand touches (or collides with) the virtual drum, the physical model is triggered and its output sound is sent to the haptuator which is attached to the drum membrane. This effectively causes the physical membrane to actuated by a virtual membrane. The haptuator both produces auditory and haptic feedback that the user can sense and respond to. Note that for the audio, no headphones are used in this application. Furthermore, the virtual environment including the virtual drum is sent to the HMD. The HMD also sends data back to the PC regarding location and rotation of the head, but as this does not change the interaction, this is not included in the figure. 
+
+The physical setup is shown in \autoref{fig:userInt}. The Leap Motion is mounted to the front of the HMD so that the hands are always in the ``field of view'' of the user when they look at the virtual drum (see \autoref{fig:userInt}). The drum is placed in between the legs of the user and played like a djembe. \textbf{MAYBE WE NEED TO FIX THE DRUM SOMEWHERE IF WE WANT TO TEST THE ILLUSION OF THE SIZE CHANGING}
+
+\begin{figure}[h]
+\includegraphics[width=1.0\columnwidth]{systemlayout-reverse.png}
+\caption{System layout. The user interacts with the system using their hands and gets haptic and auditory feedback from the haptuator attached to the drum membrane and visual feedback from the Oculus Rift headset. A detailed explanation can be found in \autoref{sec:sys}.}
+\centering
+\label{fig:systemLayout}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\columnwidth]{leapOnFace.png}
+\caption{The physical setup showing user interaction and tracking. The Leap Motion is mounted on the HMD as shown and tracks the interaction of the hands with the drum.}
+\centering
+\label{fig:userInt}
+\end{figure}
+
+\section{Unity Implementation}\label{sec:unity}
+\subsection{Myo armband and Leap Motion}
+The Leap Motion is a sensor-based cameras and infrared lights that allows accurately track the hands motion, including ﬁngers. Theoretically, it could be possible to combine the data from both Myo armband and Leap Motion in order to create a 3D virtual simulation in real time of an arm motion, including the arm, forearm, hand and fingers. For the purposes of this project, we found visualisation of ones's own hands to be. Including the whole arm would not improve the whole simulation. For this reason, we built a virtual environment and applied the Leap Motion sensor as shown in Figure \ref{fig:sl1}.
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{sil_drum}
+\caption{Leap motion and virtual drum}
+\centering
+\label{fig:sl1}
+\end{figure}
+\subsection{Virtual Reality environment}
+In Unity we created a virtual drum playable with hand motion using Leap Motion sensors. The user enters the VR environment and sees their own hands. A virtual recording studio is room  resembles a recording studio and placed a drum at the center of the room. Drum skin was programmed to detect collision with the reconstructed hand (hand had a capsule collider attached to it). When the collision was detected, the C\# script was activated to reproduce the beating sound of the drum through an actuator placed on the drum skin.
 
 \section{Physical Model}\label{sec:PM}
 The behaviour of musical instruments can be well described by partial differential equations (PDEs) \cite{Fletcher1998}. In this section, the continuous-time PDE for a drum-membrane will be given and explained. This is followed by an explanation of the discretisation method after which and parameter values for our implementation will be given. 
@@ -176,24 +252,27 @@ A rectangular (stiff) membrane with dimensions $L_x$ (m) and $L_y$ (m) can be de
 \begin{equation}
 \rho H\frac{\partial^2u}{\partial t^2} = T\Delta u - D\Delta\Delta u - 2 \sigma_0\frac{\partial u}{\partial t} + 2 \sigma_1 \Delta \frac{\partial u}{\partial t}.
 \end{equation}
-Here state variable, $u = u(x,y,t)$ is a function of horizontal coordinate $x \in [0, L_x]$, vertical coordinate $y \in [0, L_y]$ and time $t\geq0$ and is parameterised in terms of material density $\rho$ (kg/m$^3$), membrane thickness $H$ (m), tension $T$ (N) and frequency independent and dependent damping coefficients $\sigma_0$ (s$^{-1}$) and $\sigma_1$ (m$^2$/s). Furthermore, $D = EH^3/12(1-\nu^2)$ with Young's modulus $E$ (Pa) and Poisson's ratio $\nu$. Lastly, $\Delta$ represents the 2D Laplacian \cite{bilbao2009numerical}:
+Here, state variable, $u = u(x,y,t)$ is a function of horizontal coordinate $x \in [0, L_x]$, vertical coordinate $y \in [0, L_y]$ and time $t\geq0$ and is parameterised in terms of material density $\rho$ (kg/m$^3$), membrane thickness $H$ (m), tension $T$ (N) and frequency independent and dependent damping coefficients $\sigma_0$ (s$^{-1}$) and $\sigma_1$ (m$^2$/s). Furthermore, $D = EH^3/12(1-\nu^2)$ with Young's modulus $E$ (Pa) and Poisson's ratio $\nu$. Lastly, $\Delta$ represents the 2D Laplacian \cite{bilbao2009numerical}:
 \begin{equation}\label{eq:PDE}
-    \Delta = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}
+    \Delta = \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2}.
 \end{equation}
-
+Furthermore, clamped boundary conditions -- i.e., the state $u$ at all plate edges and their gradients are 0 -- have been chosen for simplicity:
+\begin{equation}
+    u = \nabla u = 0 \quad \text{with} \quad \nabla = \frac{\partial}{\partial x} + \frac{\partial}{\partial y}.
+\end{equation}
 \subsection{Discretisation}
-For implementation of the physical model, finite-difference time-domain (FDTD) methods have been used for their accuracy. This technique discretised $u(x,y,t)$ shown in \autoref{eq:PDE} to $u_{(l,m)}^n$ using $x=lh$ where $l \in [0, ..., N_x-1]$ and $y=mh$ where $m \in [0, ..., N_y-1]$ where $N_x$ and $N_y$ are the number of horizontal and vertical grid points respectively. Furthermore, time is discretised using $t = nk$ with sample $n$ and time step $k$ (s) and $h$ (m) is the space between two grid points calculated using 
+For implementation of the physical model, finite-difference time-domain (FDTD) methods have been used for their accuracy. This technique discretises $u(x,y,t)$ shown in Equation \eqref{eq:PDE} to $u_{(l,m)}^n$ using $x=lh$ where $l \in [0, ..., N_x-1]$ and $y=mh$ where $m \in [0, ..., N_y-1]$ where $N_x$ and $N_y$ are the number of horizontal and vertical grid points respectively. Furthermore, time is discretised using $t = nk$ with sample $n$ and time step $k$ (s) and $h$ (m) is the space between two grid points calculated using 
 
 \begin{equation}\label{eq:h}
     h \geq h_\text{min} =  2\sqrt{\frac{c^2k^2 + 4\sigma_1k + \sqrt{(c^2k^2 + 4\sigma_1k)^2 + 4\kappa^2 k^2} }{2}},
 \end{equation}
-where $c = \sqrt{T/\rho H}$ and $\kappa = \sqrt{D/\rho H}$. The closer $h$ is to $h_\text{min}$, the higher the accuracy of the implementation. Furthermore, clamped boundary conditions -- i.e., the state $u$ at all plate edges and their gradients are 0 -- have been chosen:
-\begin{equation}
-    u = \nabla u = 0.
-\end{equation}
-\\
+where $c = \sqrt{T/\rho H}$ and $\kappa = \sqrt{D/\rho H}$. The closer $h$ is to $h_\text{min}$, the higher the accuracy of the implementation.
 \subsection{Parameters}
-Most parameters used in the simulation were chosen using trial and error and educated guesses \textbf{$\leftarrow$ Probably write something different here :)}. They can be found in \autoref{tab:parameters}.
+Most parameters used in the simulation were chosen using trial and error and empirical tests. They can be found in \autoref{tab:parameters}. With these parameters we will have a small (30$\times$30 cm) membrane with a low density and stiffness. For speed purposes the grid spacing $h$ in Equation \eqref{eq:h} is multiplied by 4. The values for $T$, $\sigma_0$ and $\sigma_1$ are ranges \textbf{the two first of which linked to interactions / different drum sizes as will be elaborated upon in section....}. The frequency dependent damping follows an exponentially decaying curve, 
+\begin{equation}
+    \sigma_1(t) = 0.005e^{-0.01 t},
+\end{equation}
+where $t=0$ at the time of excitation. This allows for zero damping, i.e., infinite sound, while taking away some of the high frequency content present immediately after excitation.
 \begin{table}[h]
 \caption{Table showing parameter values}\label{tab:parameters}
 \centering
@@ -216,73 +295,9 @@ Most parameters used in the simulation were chosen using trial and error and edu
 \end{tabular}
 \end{table}\vspace{1em}
 
-\textit{NOTES}
-\begin{itemize}
-    \item Clamped boundary conditions
-    \item Discretisation
-    \item Parameter design
-\end{itemize}
-
-For speed purposes we multiply $h$ in \autoref{eq:h} by 4.
-
-\section{Haptics}
-\subsection{Introduction}
-Touch is the first sense to develop in the womb in humans \cite{Barnett1972} compared to visions that it is the last one we develop. Another difference between touch and vision, is that we cannot shut down touch whereas we can close our eyes voluntarily. However tactile awareness always receives less attention than other sensory modalities. One reason for this under-evaluation of tactile stimuli could be the broad number of sensations touch comprises: pressure, temperature, pleasure, pain, joint position, muscle sense, and movement. Probably pain should be included too. 
-
-\subsection{Haptic perception}
-Peripheral Nervous System gathers environmental stimuli in form of visual, audible, tactile, olfactive and gustatory inputs and transfers them to the Central Nervous System for further elaboration and integration. Tactile information is collected by proprioceptors in the skin, muscles, and joints and sent to the primary somatosensory cortex (post-central gyrus) via the dorsal column-medial lemniscus pathway to the thalamic nuclei \cite{Blatow2007}. This cortical area is the first stage for the tactile awareness occurring across body surface. The primary somatosensory cortex represents tactile stimuli following an inverted order from the toe (at the top of the parietal hemisphere) to mouth (at the lateral side of the parietal hemisphere) \cite{Narici1999}. However, several other structures of the central nervous system concur in the generation of tactile feedback: generally, a single brain area is never responsible for the awareness of information \cite{Manzoni1986}. Directly connected with the primary somatosensory cortex is the secondary somatosensory cortex, an associative area important in humans for light touch and tactile attention \cite{Eickhoff2005}. It is reported in literature that persons undergoing tactile training improve their perception but also strengthens the connections and cortical representations of the stimulated body area \cite{Saito2007} with a direct relationship between size of cortical region and haptic performance. For the awareness of touch it is also important the presence of short term memory system \cite{Edelman1989}: the parietal ventral area connects both pre-motor brain areas and the somatosensory memory hub. A specific area of the central parietal lobe, placed caudally from the primary somatosensory cortex, integrates the information from the visual and haptic regions to locate objects in space. 
-
-\subsection{Technical notes on experiments involving haptics}
-Conducting experiments on haptics it is quite difficult because there aren’t proper technological devices for delivering controlled and reliable tactile stimuli. In Virtual Environments using Leap Motion technology, subjects move freely their hands and this could confound somatosensory processing with activations related to motor planning and movement \cite{Bodegard2001}. These uncontrolled motor activities also result in uncontrolled somatic stimulation. There is an anatomical explanation of this close somato-motor functional relationship: areas involved in the perception of touch on the hands in the primary somatosensory cortex are located mostly in front of the areas responsible for hand movements \cite{Penfield1950}.
-Another problem with haptics is the subjective quantification of the stimuli. Contents of tactile consciousness vary between individuals and a common lexicon to evaluate haptic sensation through surveys still seems far to be conceived \cite{Gallace2010}.
-
-\subsection{Interaction between visual information and tactile feedback}
-In famous experiment by \cite{Pavani2000}, authors asked a group of persons to detect the position of vibrotactile stimuli while their upper limbs were placed out of view and a fake rubber hand was placed in front of them. Rubber hand was placed in a position that was anatomically-compatible with their real limbs and participants always reported that tactile stimulation was arising from the mannequin and not from their real hand. A similar experiment was conducted by \cite{Schaefer2006} asking subjects to watch a video of a hand being touched on the first finger while their own hand was stimulated synchronously. Brain activity during synchronous stimulation showed an improved tactile acuity.  In Virtual Environments hand manipulations and interactions are a component that enhances realism. 
-
-\section{Myo Armband}
-Myo (Thalmic Labs, now North) is a wireless sensor that records surface electromyographic (i.e. sEMG) activity from 8 sensors placed around the forearm. Sensors record EMG signals converting muscle activation in electric potentials. The sampling frequency of the device is 200Hz and the signal amplitude is expressed in “units of activation” and not on mV like standard electromyographic recorders. The armband encloses nine axis inertial measurement unit (i.e. IMU) which contains a three axis gyroscope, three axis accelerometer and a three axis magnetometer \cite{myowebsite}. From these measurements of spatial information, wearer’s arm can be tracked both in the orientation and movement. The orientation data indicates the positioning of the armband in terms of the euler angles (i.e. roll, pitch and yaw). The angular velocity of the armband is provided in a vector format and the accelerometer represents the acceleration the Myo armband is undergoing at a given time. It should be considered that the Myo armband is better suited for determining the relative positioning of the arm rather than the absolute position. The Myo armband has been made to work best at the widest part of the forearm, that is, the upper forearm (Fig. \ref{fig:arm1}).
-\begin{figure}[h]
-\includegraphics[width=0.5\textwidth]{myo_armband_muscles}
-\caption{Muscle detected and armband position}
-\centering
-\label{fig:arm1}
-\end{figure}
-Myo can detect the forearm movement in space, flexion and extension of the wirst or when a subject is spreading the fingers or closing the fist. 
-\subsection{Raw signals and pre-processing}
-To obtain gestural data from a subject after wearing the armband it could be possible to extract the raw signals as shown in Figure \ref{fig:sig0}. The armband uses a bluetooth connection to stream data to the pc for data collection and interpretation. It is suggested from the producer to “warm-up” the band following the app procedure before starting to collect sEMG signals.
-\begin{figure}[h]
-\includegraphics[width=0.5\textwidth]{signals0}
-\caption{Raw sEMG signals as extracted from Myo armband}
-\centering
-\label{fig:sig0}
-\end{figure}
-However, raw signals have limited practical application while the common pre-processing involves rectification and envelope calculation (Figure \ref{fig:sig1}). These signals are more easily interpreted and could be integrated in Unity3D environment for hand gesture control. 
-\begin{figure}[h]
-\includegraphics[width=0.5\textwidth]{signal1}
-\caption{Post-processed sEMG signals}
-\centering
-\label{fig:sig1}
-\end{figure}
-In Unity3D the arm-band needs to sit on the subject for at least 2 minutes to be considered “stable”. In Unity a simple controller was create using a thin rectangle with a box on the top to simulate a drum-stick. One end-point is fixed in the same way human forearm connects with the arm. The box changes color according to wrist movement in extension (green) or flexion (blue). In other positions the box stays with the gray color. In Figure \ref{fig:mm1}, the extension of the palm of the hand is detected by the system and the color of the box turned to green. Using forearm motion and wrist extension or flexion it could be possible to create a virtual drum using collisions with virtual drum parts. When collision between the virtual stick controlled with Myo and the drum component is detected a wav file could be played with a pre-sampled musical tone. A simple demo was created using this procedure using a cymbal and a snare-drum.
-\begin{figure}[h]
-\includegraphics[width=0.5\textwidth]{mauro_myo}
-\caption{Human interaction in Unity using Myo armband}
-\centering
-\label{fig:mm1}
-\end{figure}
-
-\section{Drumming in Virtual Reality}
-\subsection{Myo armband and Leap Motion}
-The Leap Motion is a sensor-based cameras and infrared lights that allows accurately track the hands motion, including ﬁngers. Theoretically, it could be possible to combine the data from both Myo armband and Leap Motion in order to create a 3D virtual simulation in real time of an arm motion, including the arm, forearm, hand and fingers. However, for the purposes of this virtual drum project, visualisation of the own hands only is fair enough and the inclusion of the whole arm doesn't improve the whole simulation. For this reason, we built a virtual environment and applied the Leap Motion sensor as shown in Figure \ref{fig:sl1}.
-\begin{figure}[h]
-\includegraphics[width=0.5\textwidth]{sil_drum}
-\caption{Leap motion and virtual drum}
-\centering
-\label{fig:sl1}
-\end{figure}
-\subsection{Virtual Reality environment}
-In Unity we created a virtual drum playable with hand motion using Leap Motion sensors. We re-created a virtual room that resembles a recording studio and placed a drum at the center of the room. Drum skin was programmed to detect collision with the reconstructed hand (hand had a capsule collider attached to it). When the collision was detected, the C\# script was activated to reproduce the beating sound of the drum through an actuator placed on the drum skin.
-\section{Conclusion}
+\section{Experiment}\label{sec:exp}
+\section{Results and Discussion}\label{sec:resDisc}
+\section{Conclusion}\label{sec:conc}
 
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
 nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
