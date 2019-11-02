@@ -75,7 +75,7 @@
 
 %% Paper title.
 
-\title{Drumming in VR - A Case Study}
+\title{Drumming in VR - A Haptic-based Case Study}
 
 %% This is how authors are specified in the conference style
 
@@ -154,23 +154,34 @@ delenit augue duis dolore te feugait nulla facilisi.%
 \firstsection{Introduction}
 
 \maketitle
+Virtual Reality (VR) is described as an immersive environment experienced through sensory stimuli provided by technology. In VR one's actions partially determine what happens in the environment \cite{Serafin:2017}. Different types of technologies are available for creating VR experiences and Head Mounted Displays (HMD) are among the most popular.
 
-Virtual Reality (VR)... makes use of a Head Mounted Display (HMD)
-...and has been used as a platform for the creation of perceptual illusions (\textbf{SOURCES})
-The darbuka (or goblet drum) is an old egyptian membranophone.
+Virtual reality has been used as a platform for the creation of perceptual illusions, and much research has gone into producing realistic or otherwise compelling visual and audio experiences. By comparison, the sense of touch has been neglected in spite of its obvious potential to increase a sense of presence in a simulated world \cite{Serafin:2017}.
 
-State of the art on virtual instruments...
+Virtual musical instruments (VMIs) are defined as software simulations or extensions of existing musical instruments with a focus on sonic emulation. Virtual reality musical instruments (VRMIs), are those which also include a simulated visual component \cite{Serafin:2016}. In this paper we describe the design and evaluation of DigiDrum - a novel VRMI where a single physical drum is enhanced by virtual reality to create drums with different properties. DigiDrum uses a physical simulation of a drum membrane to map a user's tapping movements into computer generated sounds. These digital sounds create a vibrotactile response in the physical drum providing haptic feedback similar to what the digital sounds would produce in a real membrane.  %Each physical model of a membrame is correlated to a different visual representation shown to the user in an immersive visualization through a head mounted display.
 
-In this paper, a multisensory VR application is presented where a user interacts with both a physical and a virtual drum. The physical drum, is augmented using a haptuator through which the output sound of a physical model of a (drum) membrane (further referred to as ``the physical model") is sent. The user wears a Head Mounted Display (HMD) through which the virtual drum is displayed. 
 
-In \autoref{sec:haptics}, an introduction to haptic perception will be given. In \autoref{sec:sys} the system overview will be given after which details about the implementation of the virtual environment and the physical model will be given in \autoref{sec:unity} and \autoref{sec:PM} respectively. Then, in \autoref{sec:exp} the experiment will be described and its results will be shown and discussed in \autoref{sec:resDisc}. Lastly, \autoref{sec:conc} will conclude. 
+
+Our interest lies in (1) enhancing musical expression possibilities through a virtual reality musical instrument, and (2) investigating user's interaction with a virtual reality setup focused not only on the visual and auditory experience, but also on haptics.
+
+%\autoref{sec:VRMI} gives a short overview on virtual reality musical instrument state of the art.
+\autoref{sec:Design_criteria} describes the design criterias used in the design of DigiDrum.
+\autoref{sec:haptics} is an introduction to haptic perception. 
+In \autoref{sec:sys} we describe the system overview. \autoref{sec:unity} details the implementation of the visual virtual environment and in \autoref{sec:PM} the physical model sound algorithm is described. 
+In \autoref{sec:exp} an experiment involving users interacting with the setup is presented with results shown. Future development is discussed in \autoref{sec:resDisc}.
+
+% \section{Virtual Reality Musical Instruments}\label{sec:VRMI}
+
+\section{Design Criteria}\label{sec:Design_criteria}
+
+We seek to create three types of illusions with our installation: a place illusion (users should feel like they are in a music production studio), a plausability illusion (users should feel like the experience is really happening) and virtual body ownership (the user should feel ownership of their virtual body, in this case - their hands). 
 
 \section{Haptics}\label{sec:haptics}
 % \subsection{Introduction}
-Touch is the first sense to develop in the womb in humans \cite{Barnett1972} compared to visions which it is the last sense we develop. Another difference between touch and vision, is that we cannot shut down touch whereas we can close our eyes voluntarily. Despite this, tactile awareness generally receives less attention than other sensory modalities when it comes to technological development \textbf{SOURCE?}. One reason for this under-evaluation of tactile stimuli could be the broad number of sensations touch comprises: pressure, temperature, pleasure, pain, joint position, muscle sense, and movement. Probably pain should be included too. \textbf{In this section.... }
+Touch is the first sense to develop in the womb in humans \cite{Barnett1972}. Vision is the last sense we develop. Touch is a sense which cannot be shut down whereas we can close our eyes voluntarily. Despite this, tactile awareness generally receives less attention than other sensory modalities when it comes to technological development \textbf{SOURCE?}. One reason for this under-evaluation of tactile stimuli could be the broad number of sensations touch comprises: pressure, temperature, pleasure, pain, joint position, muscle sense, and movement. Probably pain should be included too. \textbf{In this section we describe in further detail haptic perception and how it works from a biological point of view.}
 
 \subsection{Haptic perception}
-The Peripheral Nervous System gathers environmental stimuli in form of visual, audible, tactile, olfactive and gustatory inputs and transfers them to the Central Nervous System for further elaboration and integration. Tactile information is collected by proprioceptors in the skin, muscles, and joints and sent to the primary somatosensory cortex (post-central gyrus) via the dorsal column-medial lemniscus pathway to the thalamic nuclei \cite{Blatow2007}. This cortical area is the first stage for the tactile awareness occurring across body surface. The primary somatosensory cortex represents tactile stimuli following an inverted order from the toe (at the top of the parietal hemisphere) to mouth (at the lateral side of the parietal hemisphere) \cite{Narici1999}. However, several other structures of the central nervous system concur in the generation of tactile feedback: generally, a single brain area is never responsible for the awareness of information \cite{Manzoni1986}. Directly connected with the primary somatosensory cortex is the secondary somatosensory cortex, an associative area important in humans for light touch and tactile attention \cite{Eickhoff2005}. It is reported in literature that persons undergoing tactile training improve their perception but also strengthens the connections and cortical representations of the stimulated body area \cite{Saito2007} with a direct relationship between size of cortical region and haptic performance. For the awareness of touch, the presence of the short term memory system is also important \cite{Edelman1989} as the parietal ventral area connects both pre-motor brain areas and the somatosensory memory hub. A specific area of the central parietal lobe, placed caudally from the primary somatosensory cortex, integrates the information from the visual and haptic regions to locate objects in space. 
+The Peripheral Nervous System gathers environmental stimuli in form of visual, audible, tactile, olfactive and gustatory inputs and transfers them to the Central Nervous System for further elaboration and integration. Tactile information is collected by proprioceptors in the skin, muscles, and joints and sent to the primary somatosensory cortex (post-central gyrus) via the dorsal column-medial lemniscus pathway to the thalamic nuclei \cite{Blatow2007}. This cortical area is the first stage for the tactile awareness occurring across body surface. The primary somatosensory cortex represents tactile stimuli following an inverted order from the toe (at the top of the parietal hemisphere) to mouth (at the lateral side of the parietal hemisphere) \cite{Narici1999}. However, several other structures of the central nervous system concur in the generation of tactile feedback: generally, a single brain area is never responsible for the awareness of information \cite{Manzoni1986}. Directly connected with the primary somato-sensory cortex is the secondary somatosensory cortex, an associative area important in humans for light touch and tactile attention \cite{Eickhoff2005}. It is reported in literature that people undergoing tactile training improve their perception but also strengthens the connections and cortical representations of the stimulated body area \cite{Saito2007} with a direct relationship between size of cortical region and haptic performance. For the awareness of touch, the presence of the short term memory system is also important \cite{Edelman1989} as the parietal ventral area connects both pre-motor brain areas and the somatosensory memory hub. A specific area of the central parietal lobe, placed caudally from the primary somatosensory cortex, integrates the information from the visual and haptic regions to locate objects in space. 
 
 \subsection{Technical notes on experiments involving haptics}
 Conducting experiments on haptics is quite difficult because there are no proper technological devices for delivering controlled and reliable tactile stimuli \textbf{SOURCE}. In virtual environments (as used in Virtual Reality) using the Leap Motion technology \textbf{[Leap motion source]}, subjects are able to move their hands freely, which  could confound somatosensory processing with activations related to motor planning and movement \cite{Bodegard2001}. These uncontrolled motor activities also result in uncontrolled somatic stimulation. There is an anatomical explanation of this close somato-motor functional relationship: areas involved in the perception of touch on the hands in the primary somatosensory cortex are located mostly in front of the areas responsible for hand movements \cite{Penfield1950}.
@@ -212,34 +223,46 @@ In Unity, the arm-band needs to sit on the subject for at least 2 minutes to be 
 \end{figure}
 
 \section{System Overview} \label{sec:sys}
-The overview of the system is given in \autoref{fig:systemLayout}. The user interacts with the system using their hands which are tracked by the Leap Motion, an infrared-sensor-based camera that allows for accurate tracking of hand and finger motion . This data is retrieved by the PC which runs the Unity3D software, or Unity for short, which a software platform commonly used for creating VR applications. The Unity ``scene" contains the virtual environment (see \autoref{sec:unity}) that the user will see through the HMD and the physical model used for the sound and haptics (see \autoref{sec:PM}). Once the tracked hand touches (or collides with) the virtual drum, the physical model is triggered and its output sound is sent to the haptuator which is attached to the drum membrane. This effectively causes the physical membrane to actuated by a virtual membrane. The haptuator both produces auditory and haptic feedback that the user can sense and respond to. Note that for the audio, no headphones are used in this application. Furthermore, the virtual environment including the virtual drum is sent to the HMD. The HMD also sends data back to the PC regarding location and rotation of the head, but as this does not change the interaction, this is not included in the figure. 
-
-The physical setup is shown in \autoref{fig:userInt}. The Leap Motion is mounted to the front of the HMD so that the hands are always in the ``field of view'' of the user when they look at the virtual drum (see \autoref{fig:userInt}). The drum is placed in between the legs of the user and played like a djembe. \textbf{MAYBE WE NEED TO FIX THE DRUM SOMEWHERE IF WE WANT TO TEST THE ILLUSION OF THE SIZE CHANGING}
+The overview of the system is given in \autoref{fig:systemLayout}. The user interacts with the system using their hands which are tracked by the Leap Motion, an infrared-sensor-based camera that allows for accurate tracking of hand and finger motion . This data is retrieved by the PC which runs Unity, a software platform commonly used for creating VR applications \cite{unity}.
 
 \begin{figure}[h]
-\includegraphics[width=1.0\columnwidth]{systemlayout-reverse.png}
-\caption{System layout. The user interacts with the system using their hands and gets haptic and auditory feedback from the haptuator attached to the drum membrane and visual feedback from the Oculus Rift headset. A detailed explanation can be found in \autoref{sec:sys}.}
+\includegraphics[width=1.0\columnwidth]{VRDrumSetup.png}
+\caption{DESCRIPTION HERE. (also, did you code a lot? There's two \&-signs in the description of the visuals ;) )}
 \centering
 \label{fig:systemLayout}
 \end{figure}
 
+The Unity ``scene" contains the virtual environment (see \autoref{sec:unity}) that the user will see through the HMD and the physical model used for the sound and haptics (see \autoref{sec:PM}). Once the tracked hand touches (or collides with) the virtual drum, the physical model is triggered and its output sound is sent to the haptuator which is attached to the drum membrane. This effectively causes the physical membrane to actuated by a virtual membrane. The same sound is sent to isolating headphones so that the sound coming from the physical drum does not interfere with the audio coming from the enhanced physical drum. Furthermore, the virtual environment including the virtual drum is sent to the HMD. The HMD also sends data back to the PC regarding location and rotation of the head, but as this does not change the interaction, this is not included in the figure. 
+
+The physical setup is shown in \autoref{fig:userInt}. The Leap Motion is mounted to the front of the HMD so that the hands are always in the ``field of view'' of the user when they look at the virtual drum (see \autoref{fig:userInt}). The drum is placed in between the legs of the user and played like a djembe. \textbf{MAYBE WE NEED TO FIX THE DRUM SOMEWHERE IF WE WANT TO TEST THE ILLUSION OF THE SIZE CHANGING}
+
+The darbuka (or goblet drum) is an old egyptian membranophone.
+
+
 \begin{figure}[h]
+\includegraphics[width=1.0\columnwidth]{systemlayout-updated.png}
+\caption{System layout. The user interacts with the system using their hands and gets haptic feedback from the haptuator attached to the drum membrane, auditory feedback from closed headphones and visual feedback from the Oculus Rift headset. A detailed explanation can be found in \autoref{sec:sys}.}
 \centering
-\includegraphics[width=0.7\columnwidth]{leapOnFace.png}
-\caption{The physical setup showing user interaction and tracking. The Leap Motion is mounted on the HMD as shown and tracks the interaction of the hands with the drum.}
-\centering
-\label{fig:userInt}
+\label{fig:systemLayout}
 \end{figure}
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.7\columnwidth]{leapOnFace.png}
+% \caption{The physical setup showing user interaction and tracking. The Leap Motion is mounted on the HMD as shown and tracks the interaction of the hands with the drum.}
+% \centering
+% \label{fig:userInt}
+% \end{figure}
 
 \section{Unity Implementation}\label{sec:unity}
 \subsection{Myo armband and Leap Motion}
 The Leap Motion is a sensor-based cameras and infrared lights that allows accurately track the hands motion, including ﬁngers. Theoretically, it could be possible to combine the data from both Myo armband and Leap Motion in order to create a 3D virtual simulation in real time of an arm motion, including the arm, forearm, hand and fingers. For the purposes of this project, we found visualisation of ones's own hands to be. Including the whole arm would not improve the whole simulation. For this reason, we built a virtual environment and applied the Leap Motion sensor as shown in Figure \ref{fig:sl1}.
-\begin{figure}[h]
-\includegraphics[width=0.5\textwidth]{sil_drum}
-\caption{Leap motion and virtual drum}
-\centering
-\label{fig:sl1}
-\end{figure}
+%\begin{figure}[h]
+%\includegraphics[width=0.5\textwidth]{sil_drum}
+%\caption{Leap motion and virtual drum}
+%\centering
+%\label{fig:sl1}
+%\end{figure}
 \subsection{Virtual Reality environment}
 In Unity we created a virtual drum playable with hand motion using Leap Motion sensors. The user enters the VR environment and sees their own hands. A virtual recording studio is room  resembles a recording studio and placed a drum at the center of the room. Drum skin was programmed to detect collision with the reconstructed hand (hand had a capsule collider attached to it). When the collision was detected, the C\# script was activated to reproduce the beating sound of the drum through an actuator placed on the drum skin.
 
@@ -268,11 +291,11 @@ For implementation of the physical model, finite-difference time-domain (FDTD) m
 \end{equation}
 where $c = \sqrt{T/\rho H}$ and $\kappa = \sqrt{D/\rho H}$. The closer $h$ is to $h_\text{min}$, the higher the accuracy of the implementation.
 \subsection{Parameters}
-Most parameters used in the simulation were chosen using trial and error and empirical tests. They can be found in \autoref{tab:parameters}. With these parameters we will have a small (30$\times$30 cm) membrane with a low density and stiffness. For speed purposes the grid spacing $h$ in Equation \eqref{eq:h} is multiplied by 4. The values for $T$, $\sigma_0$ and $\sigma_1$ are ranges \textbf{the two first of which linked to interactions / different drum sizes as will be elaborated upon in section....}. The frequency dependent damping follows an exponentially decaying curve, 
+Most parameters used in the simulation were chosen using trial and error and empirical tests. They can be found in \autoref{tab:parameters}. With these parameters we will have a small (30$\times$30 cm) membrane with a low density and stiffness. For speed purposes the grid spacing $h$ in Equation \eqref{eq:h} is multiplied by 4. The values for $T$ and $\sigma_0$ correspond to the three different sizes of drum from large to small. Note that we are not changing the size of the model as tension gives the same effect, i.e., changes in frequency. The frequency dependent damping  $\sigma_1$ follows an exponentially decaying curve, 
 \begin{equation}
     \sigma_1(t) = 0.005e^{-0.01 t},
 \end{equation}
-where $t=0$ at the time of excitation. This allows for zero damping, i.e., infinite sound, while taking away some of the high frequency content present immediately after excitation.
+where $t=0$ at the time of excitation. This allows for very low damping, i.e., very long sound, while taking away some of the high frequency content present immediately after excitation.
 \begin{table}[h]
 \caption{Table showing parameter values}\label{tab:parameters}
 \centering
@@ -284,10 +307,10 @@ where $t=0$ at the time of excitation. This allows for zero damping, i.e., infin
     Membrane length & $L_y$ (m) & $0.3$ \\
     Material density & $\rho$ (kg/m$^3$)& $10$ \\
     Thickness & $H$ (m) & $0.001$ \\
-    Tension & $T$ (N) & $T \in [5, 80]$ \\
+    Tension & $T$ (N) & $T = \{15, 40, 80\}$ \\
     Young's modulus & $E$ (Pa)& $2\cdot 10^3$ \\
     Poisson's ratio & $\nu$ (-)& $0.3$ \\
-    Freq. indep. damping & $\sigma_0$ (s$^{-1}$) & $\sigma_0 \in [0, 5]$\\
+    Freq. indep. damping & $\sigma_0$ (s$^{-1}$) & $\sigma_0 \in \{0.5, 2, 5\}$\\
     Freq. dep. damping & $\sigma_1$ (m$^2$/s) & $\sigma_1 \in [0, 0.005]$\\
     Time step & $k$ (s) & $1/44100$\\
     Grid spacing & $h$ (m) & $4h_\text{min}$\\
@@ -296,23 +319,38 @@ where $t=0$ at the time of excitation. This allows for zero damping, i.e., infin
 \end{table}\vspace{1em}
 
 \section{Experiment}\label{sec:exp}
+
+In the above we presented a setup made of: a virtual reality drum which involves a physical prop providing haptic feedback. Considering that different physical drums would produce different acoustic results and a musician would have to spend hours practicing and improving their stroke techniques for a specific one - our virtual reality musical instrument is an implementation of 3 different drum types into a single setup. While getting the haptic feedback of a drumming experience, one can switch between different musical instruments, explore their potential and train their stroke. 
+
+This takes advantage of the fact that VR allows for possibilities which could not happen in the real world.
+
+In order to understand our VRMI's limitations and to inform future development of our work, we make an experiment, inquiring: How does user interaction with a physical drum change when visual, audio and haptic cues are manipulated in a VR setup?  We hope to: on one hand find ways to improve the DigiDrum setup in terms of usability and functionality, and on the other hand to add to the corpus of design guidelines for VRMIs, more specifically those VRMIs which involve a stroking movement.
+
+Serafin et al. \cite{Serafin:2016} describe three layers of evaluation for VRMIs, namely: (1) investigating modalities of interaction, (2) evaluating VR specific aspects, with engagement being the most interesting from a VRMI perspective, and (3) looking at quality and goals of interaction.
+
+For the same physical prop, we change the visual, audio and haptic parameters to create 3 drums with different:
+
+(a) visual size
+
+(b) model tension (changing the frequency of the sound: higher tension = higher pitch and vice versa)
+
+(c) damping coefficients (how fast the sound dies out: higher damping = short sound and vice versa).
+
+Users experiences are evaluated through:
+
+- a questionnaire which asks about their relationship and experience with music production, virtual body ownership, setup ease of use and possible design flaws
+
+- Noted observation while the participants were interacting with the setup which will give data on engagement, stroke patterns which possibly correlate to drum visual size and/or haptics and sound.
+
 \section{Results and Discussion}\label{sec:resDisc}
+The physical model of the membrane allows for sound experimentation with sounds which 
+In this paper we presented a setup made of: a virtual reality drum which involves a physical prop providing haptic feedback. Considering that different physical drums would produce different acoustic results and a musician would have to spend hours practicing and improving their stroke techniques for a specific one - our virtual reality musical instrument is an implementation of 3 different drum types into a single setup. While getting the haptic feedback of a drumming experience, one can switch between different musical instruments, explore their potential and train their stroke. This takes advantage of the fact that VR allows for possibilities which could not happen in the real world.
+
 \section{Conclusion}\label{sec:conc}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
-ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam
-et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
-takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit
-amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor
-invidunt ut labore et dolore magna aliquyam erat, sed diam
-voluptua. At vero eos et accusam et justo duo dolores et ea
-rebum.
+In this paper we presented and evaluated a novel VRMI where a physical drum was enhanced by virtual reality. 
 
+Future work includes 
 
 %% if specified like this the section will be committed in review mode
 \acknowledgments{
